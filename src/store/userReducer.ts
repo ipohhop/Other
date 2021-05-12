@@ -31,12 +31,6 @@ export interface UserCompany {
     bs: string;
 }
 
-interface ActionUserInterface {
-    type: string,
-    data: User[]
-}
-
-
 export const userDataAction = createAction<User[] >('GET_USERS')
 
 
@@ -44,7 +38,7 @@ const usersReducer = createReducer([], {
     [userDataAction.type]:(state,action)=>{
 
         // @ts-ignore
-        state.push(action)
+        state.push(...action.payload)
     }
 })
 
