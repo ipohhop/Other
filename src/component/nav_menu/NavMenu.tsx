@@ -2,7 +2,7 @@ import React from 'react';
 import {makeStyles, Theme} from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-
+import {useHistory} from 'react-router-dom';
 
 function a11yProps(index: any) {
     return {
@@ -28,8 +28,38 @@ export default function NavMenu() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
+    const history = useHistory();
+
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
+        let path
+        switch (newValue) {
+            case 0:
+                path = '/'
+                break;
+            case  1:
+                path = '/itemTwo'
+                break;
+            case  2:
+                path = '/itemThree'
+                break;
+            case  3:
+                path = '/itemFour'
+                break;
+            case  4:
+                path = '/itemFive'
+                break;
+            case  5:
+                path = '/itemSix'
+                break;
+            case  6:
+                path = '/itemSeven'
+                break;
+            default:
+                path = '/'
+        }
+
+        history.push(path);
     };
 
 
@@ -43,13 +73,13 @@ export default function NavMenu() {
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
             >
-                <Tab label="Item One" {...a11yProps(0)} />
-                <Tab label="Item Two" {...a11yProps(1)} />
-                <Tab label="Item Three" {...a11yProps(2)} />
-                <Tab label="Item Four" {...a11yProps(3)} />
-                <Tab label="Item Five" {...a11yProps(4)} />
-                <Tab label="Item Six" {...a11yProps(5)} />
-                <Tab label="Item Seven" {...a11yProps(6)} />
+                <Tab label="Page One" {...a11yProps(0)} />
+                <Tab label="Page Two" {...a11yProps(1)} />
+                <Tab label="Page Three" {...a11yProps(2)} />
+                <Tab label="Page Four" {...a11yProps(3)} />
+                <Tab label="Page Five" {...a11yProps(4)} />
+                <Tab label="Page Six" {...a11yProps(5)} />
+                <Tab label="Page Seven" {...a11yProps(6)} />
             </Tabs>
 
         </div>
