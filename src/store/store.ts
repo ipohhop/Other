@@ -8,6 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 import usersReducer from './userReducer'
 import getUsersWatcher from "./saga/getUserSaga";
 import User from './interfaceUserReducer';
+import setLocationReducer from "./locationReducer";
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -15,6 +16,7 @@ const sagaMiddleware = createSagaMiddleware();
 const store = configureStore({
     reducer: {
         users: usersReducer,
+        location:setLocationReducer
     },
     middleware: [sagaMiddleware]
 })

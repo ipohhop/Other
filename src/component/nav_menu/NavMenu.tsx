@@ -1,8 +1,14 @@
+// outer
 import React from 'react';
 import {makeStyles, Theme} from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {useHistory} from 'react-router-dom';
+import {useAppDispatch, useAppSelector} from "../../store/store";
+import {setLocation} from "../../store/locationReducer";
+
+// local
+
 
 function a11yProps(index: any) {
     return {
@@ -26,12 +32,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function NavMenu() {
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
+    const locationIndex = useAppSelector(state=>state.location)
+
+    const dispatch = useAppDispatch()
 
     const history = useHistory();
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-        setValue(newValue);
+
+        dispatch(setLocation(newValue))
         let path
         switch (newValue) {
             case 0:
@@ -68,7 +77,7 @@ export default function NavMenu() {
             <Tabs
                 orientation="vertical"
                 variant="scrollable"
-                value={value}
+                value={locationIndex}
                 onChange={handleChange}
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
