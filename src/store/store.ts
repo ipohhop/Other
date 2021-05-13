@@ -5,8 +5,11 @@ import createSagaMiddleware from 'redux-saga';
 
 
 // local
-import usersReducer, {User} from './userReducer'
-import rootSaga from "./saga/getUserSaga";
+import usersReducer from './userReducer'
+import getUsersWatcher from "./saga/getUserSaga";
+import User from './interfaceUserReducer';
+
+
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,11 +17,10 @@ const store = configureStore({
     reducer: {
         users: usersReducer,
     },
-    // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
     middleware:[sagaMiddleware]
 })
 
-sagaMiddleware.run(rootSaga)
+sagaMiddleware.run(getUsersWatcher)
 
 
 export default store

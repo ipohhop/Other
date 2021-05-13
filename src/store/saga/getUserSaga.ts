@@ -1,6 +1,10 @@
-import {takeEvery, call, put, all} from 'redux-saga/effects'
+// outer
+import {takeEvery, call, put, all, takeLatest, takeLeading} from 'redux-saga/effects'
 import axios from 'axios'
+
+// local
 import {userDataAction} from "../userReducer";
+
 
 const getDataFetch = async (url: string) => await axios.get("https://jsonplaceholder.typicode.com/users");
 
@@ -8,25 +12,17 @@ export const GET_USERS_SAGA = "GET_USERS_SAGA"
 
 
 function* getUsersWorker() {
-    console.log(1111)
     try {
         // @ts-ignore
         const response = yield call(getDataFetch);
-        console.log("respons",response)
-        yield put(userDataAction(response));
+        console.log("response", response)
+        yield put(userDataAction(response.data));
     } catch (error) {
-        console.log(2222)
+        console.log(error)
     }
 }
 
-export function* helloSaga() {
-    console.log('Hello Sagas!')
+export default function* getUsersWatcher() {
+    yield takeLeading(GET_USERS_SAGA, getUsersWorker);
 }
 
-function* watchApi() {
-    yield takeEvery(GET_USERS_SAGA, getUsersWorker);
-}
-
-export default function* rootSaga() {
-    yield all([watchApi]);
-}
