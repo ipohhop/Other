@@ -73,7 +73,7 @@ export default function NavMenu() {
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
             >
-                <Tab label="Page One" {...a11yProps(0)} />
+                <Tab label="Users data" {...a11yProps(0)} />
                 <Tab label="Page Two" {...a11yProps(1)} />
                 <Tab label="Page Three" {...a11yProps(2)} />
                 <Tab label="Page Four" {...a11yProps(3)} />

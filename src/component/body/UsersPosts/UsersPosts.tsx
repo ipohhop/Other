@@ -5,7 +5,7 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-const PageTwo: FunctionComponent<Props> = (props) => {
+const UsersPosts: FunctionComponent<Props> = (props) => {
 
     return (
         <>
@@ -14,4 +14,4 @@ const PageTwo: FunctionComponent<Props> = (props) => {
         </>);
 };
 
-export default PageTwo;
+export default UsersPosts;

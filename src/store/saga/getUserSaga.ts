@@ -1,12 +1,12 @@
 // outer
-import {takeEvery, call, put, all, takeLatest, takeLeading} from 'redux-saga/effects'
-import axios from 'axios'
+import {call, put,takeLeading} from 'redux-saga/effects'
+import { getDataAPI } from '../api';
+
 
 // local
 import {userDataAction} from "../userReducer";
 
 
-const getDataFetch = async (url: string) => await axios.get("https://jsonplaceholder.typicode.com/users");
 
 export const GET_USERS_SAGA = "GET_USERS_SAGA"
 
@@ -14,9 +14,9 @@ export const GET_USERS_SAGA = "GET_USERS_SAGA"
 function* getUsersWorker() {
     try {
         // @ts-ignore
-        const response = yield call(getDataFetch);
-        console.log("response", response)
+        const response = yield call(getDataAPI);
         yield put(userDataAction(response.data));
+
     } catch (error) {
         console.log(error)
     }
