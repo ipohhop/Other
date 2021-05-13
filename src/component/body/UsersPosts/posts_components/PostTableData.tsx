@@ -44,8 +44,9 @@ function createData(
     };
 }
 
-function Row(props: { row: ReturnType<typeof createData> }) {
-    const {row} = props;
+
+function Row({row}: any) {
+    const {data} = row;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
@@ -58,12 +59,11 @@ function Row(props: { row: ReturnType<typeof createData> }) {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                    {row.name}
+                    {row.FirstName}
                 </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
+                <TableCell align="right">{row.UserName}</TableCell>
+                <TableCell align="right">{row.Company}</TableCell>
+                <TableCell align="right">{row.data.length}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
@@ -75,23 +75,17 @@ function Row(props: { row: ReturnType<typeof createData> }) {
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Date</TableCell>
-                                        <TableCell>Customer</TableCell>
-                                        <TableCell align="right">Amount</TableCell>
-                                        <TableCell align="right">Total price ($)</TableCell>
+                                        <TableCell>Title</TableCell>
+                                        <TableCell>Post</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.history.map((historyRow) => (
-                                        <TableRow key={historyRow.date}>
+                                    {data.map((item: any) => (
+                                        <TableRow key={item.id}>
                                             <TableCell component="th" scope="row">
-                                                {historyRow.date}
+                                                {item.title}
                                             </TableCell>
-                                            <TableCell>{historyRow.customerId}</TableCell>
-                                            <TableCell align="right">{historyRow.amount}</TableCell>
-                                            <TableCell align="right">
-                                                {Math.round(historyRow.amount * row.price * 100) / 100}
-                                            </TableCell>
+                                            <TableCell>{item.body}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -104,12 +98,13 @@ function Row(props: { row: ReturnType<typeof createData> }) {
     );
 }
 
-const posts = [
+const post = [
     {
         "FirstName": "Leanne Graham",
         "UserName": "Bret",
         "Email": "Sincere@april.biz",
         "Company": "Romaguera-Crona",
+        "id": 1,
         data: [
             {
                 "userId": 1,
@@ -136,6 +131,29 @@ const posts = [
     }
 ]
 
+function createPostData(
+    name: string,
+    calories: number,
+    fat: number,
+    carbs: number,
+    protein: number,
+    price: number,
+) {
+    return {
+        name,
+        calories,
+        fat,
+        carbs,
+        protein,
+        price,
+        history: [
+            {date: '2020-01-05', customerId: '11091700', amount: 3},
+            {date: '2020-01-02', customerId: 'Anonymous', amount: 1},
+        ],
+    };
+}
+
+
 const rows = [
     createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
     createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
@@ -158,9 +176,11 @@ export default function PostTableData() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <Row key={row.name} row={row}/>
-                    ))}
+                    {/*{rows.map((row) => (*/}
+                    <Row row={post[0]}/>
+                    <Row row={post[0]}/>
+
+                    {/*))}*/}
                 </TableBody>
             </Table>
         </TableContainer>
