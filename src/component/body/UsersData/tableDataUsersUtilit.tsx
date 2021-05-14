@@ -4,9 +4,9 @@ import Button from "@material-ui/core/Button";
 import {useHistory} from "react-router-dom";
 
 // local
-import User from "../../../store/interfaceUserReducer";
+import User from "../../../store/reducers/usersReducer/interfaceUserReducer";
 import {useAppDispatch} from "../../../store/store";
-import {setLocation} from "../../../store/locationReducer";
+import {setLocation} from "../../../store/reducers/locationReducer";
 
 
 export function creatRow(usersData: User[]) {

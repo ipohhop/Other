@@ -1,17 +1,15 @@
 // outer
-import {call, put,takeLeading} from 'redux-saga/effects'
-import { getDataAPI } from '../api';
+import {call, put} from 'redux-saga/effects'
+import {getDataAPI} from '../api';
 
 
 // local
-import {userDataAction} from "../userReducer";
-
-
+import {userDataAction} from "../reducers/usersReducer/userReducer";
 
 export const GET_USERS_SAGA = "GET_USERS_SAGA"
 
 
-function* getUsersWorker() {
+export default function* getUsersWorker() {
     try {
         // @ts-ignore
         const response = yield call(getDataAPI);
@@ -20,9 +18,5 @@ function* getUsersWorker() {
     } catch (error) {
         console.log(error)
     }
-}
-
-export default function* getUsersWatcher() {
-    yield takeLeading(GET_USERS_SAGA, getUsersWorker);
 }
 

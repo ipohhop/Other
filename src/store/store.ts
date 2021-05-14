@@ -3,25 +3,26 @@ import {configureStore, PayloadAction} from '@reduxjs/toolkit'
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux'
 import createSagaMiddleware from 'redux-saga';
 
-
 // local
-import usersReducer from './userReducer'
-import getUsersWatcher from "./saga/getUserSaga";
-import User from './interfaceUserReducer';
-import setLocationReducer from "./locationReducer";
-
+import usersReducer from './reducers/usersReducer/userReducer'
+import User from './reducers/usersReducer/interfaceUserReducer';
+import setLocationReducer from "./reducers/locationReducer";
+import {filterPostsReducer, postsReducer} from "./reducers/postReducers/postsReducer";
+import rootSagaWatcher from "./saga/rootSaga";
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
     reducer: {
         users: usersReducer,
-        location:setLocationReducer
+        location:setLocationReducer,
+        posts:postsReducer,
+        filterPosts:filterPostsReducer
     },
     middleware: [sagaMiddleware]
 })
 
-sagaMiddleware.run(getUsersWatcher)
+sagaMiddleware.run(rootSagaWatcher)
 
 
 export default store

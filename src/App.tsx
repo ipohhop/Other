@@ -1,10 +1,10 @@
 // outer
-import React from 'react';
+import React from 'react'
 
 // local
-import './App.css';
-import NavMenu from "./component/nav_menu/NavMenu";
-import BodyRoot from "./component/body/BodyRoot";
+import './App.css'
+import NavMenu from "./component/nav_menu/NavMenu"
+import BodyRoot from "./component/body/BodyRoot"
 
 
 function App() {

@@ -4,11 +4,11 @@ import {makeStyles, Theme} from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {useHistory} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from "../../store/store";
-import {setLocation} from "../../store/locationReducer";
+
 
 // local
-
+import {useAppDispatch, useAppSelector} from "../../store/store";
+import {setLocation} from "../../store/reducers/locationReducer";
 
 function a11yProps(index: any) {
     return {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
         display: 'flex',
-        height: 1224,
+        height: "100%",
     },
     tabs: {
         marginTop: `10px`,
