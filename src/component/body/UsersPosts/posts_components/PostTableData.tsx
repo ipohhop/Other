@@ -14,6 +14,8 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import {useAppSelector} from "../../../../store/store";
+import InputBase from '@material-ui/core/InputBase';
+import TableRowWrapper from "./postsUtil";
 
 const useRowStyles = makeStyles({
     root: {
@@ -60,12 +62,20 @@ function Row({row}: any) {
                                 </TableHead>
                                 <TableBody>
                                     {data.map((item: any) => (
-                                        <TableRow key={item.id}>
-                                            <TableCell component="th" scope="row">
-                                                {item.title}
-                                            </TableCell>
-                                            <TableCell>{item.body}</TableCell>
-                                        </TableRow>
+                                                <TableRowWrapper item={item} />
+                                        // <TableRow key={item.id}>
+                                        //     <TableCell component="th" scope="row">
+                                        //         {item.title}
+                                        //         <InputBase
+                                        //             disabled
+                                        //             defaultValue="Naked input"
+                                        //             inputProps={{ 'aria-label': 'naked' }}
+                                        //         />
+                                        //         {/*<input type="text"/>*/}
+                                        //
+                                        //     </TableCell>
+                                        //     <TableCell>{item.body}</TableCell>
+                                        // </TableRow>
                                     ))}
                                 </TableBody>
                             </Table>
