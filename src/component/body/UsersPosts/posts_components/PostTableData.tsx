@@ -61,22 +61,7 @@ function Row({row}: any) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {data.map((item: any) => (
-                                                <TableRowWrapper item={item} />
-                                        // <TableRow key={item.id}>
-                                        //     <TableCell component="th" scope="row">
-                                        //         {item.title}
-                                        //         <InputBase
-                                        //             disabled
-                                        //             defaultValue="Naked input"
-                                        //             inputProps={{ 'aria-label': 'naked' }}
-                                        //         />
-                                        //         {/*<input type="text"/>*/}
-                                        //
-                                        //     </TableCell>
-                                        //     <TableCell>{item.body}</TableCell>
-                                        // </TableRow>
-                                    ))}
+                                    {data.map((item: any) => <TableRowWrapper item={item}/>)}
                                 </TableBody>
                             </Table>
                         </Box>

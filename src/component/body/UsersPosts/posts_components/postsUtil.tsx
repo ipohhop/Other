@@ -1,5 +1,5 @@
 import User from "../../../../store/reducers/usersReducer/interfaceUserReducer";
-import React, {FunctionComponent, useState} from 'react';
+import React, {FunctionComponent, useRef, useState} from 'react';
 import TableCell from "@material-ui/core/TableCell";
 import InputBase from "@material-ui/core/InputBase";
 import TableRow from "@material-ui/core/TableRow";
@@ -48,27 +48,35 @@ export function filterForPosts(posts: Post[], users: User[]): FilterPost[] {
 
 
 interface OwnProps {
-    item:any
+    item: any
 }
 
 type Props = OwnProps;
 
 const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
 
-    const [active,setActive] = useState(true)
+    const [active, setActive] = useState(true)
+    const defaultData = useRef(item)
+
 
     return (
         <>
-            <TableRow key={item.id} onDoubleClick={()=>setActive(state=>!state)}>
+            <TableRow key={item.id} onDoubleClick={() => setActive(state => !state)}>
                 <TableCell component="th" scope="row">
-                    {item.title}
                     <InputBase
                         disabled={active}
-                        defaultValue="Naked input"
-                        inputProps={{ 'aria-label': 'naked' }}
+                        defaultValue={item.title}
+                        inputProps={{'aria-label': 'naked'}}
                     />
-                 </TableCell>
-                <TableCell>{item.body}</TableCell>
+                </TableCell>
+                <TableCell>
+                    <InputBase
+                        style={{width:"100%",wordWrap:"break-word"}}
+                        disabled={active}
+                        defaultValue={item.body}
+                        inputProps={{'aria-label': 'naked'}}
+                    />
+                </TableCell>
             </TableRow>
         </>
     );
