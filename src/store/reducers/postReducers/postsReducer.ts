@@ -1,9 +1,10 @@
 // outer
 import {createReducer, createAction} from "@reduxjs/toolkit"
+import { Post } from "../../../component/body/UsersPosts/posts_components/postsInterfaces";
 
 
 // local
-import {filterForPosts, Post} from "../../../component/body/UsersPosts/posts_components/postsUtil";
+import {filterForPosts} from "../../../component/body/UsersPosts/posts_components/postsUtil";
 import User from "../usersReducer/interfaceUserReducer";
 
 

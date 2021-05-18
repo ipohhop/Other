@@ -1,36 +1,12 @@
+// outer
+
+
+// local
+import {FilterPost, FilterPosts_data, Post} from "./postsInterfaces";
 import User from "../../../../store/reducers/usersReducer/interfaceUserReducer";
-import React, {FunctionComponent, useRef, useState} from 'react';
-import TableCell from "@material-ui/core/TableCell";
-import InputBase from "@material-ui/core/InputBase";
-import TableRow from "@material-ui/core/TableRow";
-import BorderColorIcon from '@material-ui/icons/BorderColor';
-import Fab from "@material-ui/core/Fab";
-import SaveIcon from '@material-ui/icons/Save';
-import axios from "axios";
-import {log} from "util";
 
-export interface Post {
-    userId: number;
-    id: number;
-    title: string;
-    body: string;
-}
 
-export interface FilterPost {
-    FirstName: string;
-    UserName: string;
-    Email: string;
-    Company: string;
-    id: number;
-    data: FilterPosts_data[];
-}
-
-export interface FilterPosts_data {
-    userId: number;
-    id: number;
-    title: string;
-    body: string;
-}
+// function for filter posts data from JSONPlaceholder to table format
 
 export function filterForPosts(posts: Post[], users: User[]): FilterPost[] {
 
@@ -48,76 +24,60 @@ export function filterForPosts(posts: Post[], users: User[]): FilterPost[] {
             data: filterPosts(item.id)
         }
     })
-
 }
 
 
-interface OwnProps {
-    item: any
+// reducer for post_table item data
+
+export const RESET_POST_ITEM_STATE = "RESET_POST_ITEM_STATE"
+export const SET_BODY_POST_ITEM_STATE = "SET_BODY_POST_ITEM_STATE"
+export const SET_TITLE_POST_ITEM_STATE = "SET_TITLE_POST_ITEM_STATE"
+
+export type ActionType = {
+    type: "RESET_POST_ITEM_STATE" | 'SET_BODY_POST_ITEM_STATE' | 'SET_TITLE_POST_ITEM_STATE',
+    title?: string,
+    body?: string,
+    data?:FilterPosts_data
 }
 
-type Props = OwnProps;
-
-const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
-
-    const [active, setActive] = useState(false)
-    const defaultData = useRef(item)
-    // console.log(item)
-
-    function putData() {
-
-        const data = defaultData.current
-        console.log("data",data)
-
-        axios.put(`https://jsonplaceholder.typicode.com/posts/${data.userId}`,data)
-            .then(data=>{
-                console.log(data.data)
-            })
-    }
-
-
-    return (
-        <>
-            <TableRow key={item.id} style={active ? {background: "rgba(255,255,0,0.43)"} : {}}>
-                <TableCell component="th" scope="row">
-                    {item.title}
-                    <InputBase
-                        disabled={!active}
-                        defaultValue={item.title}
-                        inputProps={{'aria-label': 'naked'}}
-                    />
-                </TableCell>
-                <TableCell>
-                    {item.body}
-                    <InputBase
-                        style={{width: "100%", wordWrap: "break-word"}}
-                        disabled={!active}
-                        defaultValue={item.body}
-                        inputProps={{'aria-label': 'naked'}}
-                    />
-                </TableCell>
-                <TableCell>
-
-                    <strong>
-                        <Fab size="small" color="primary" aria-label="add">
-                            <BorderColorIcon onClick={() => setActive(state => true)}/>
-                        </Fab>
-                    </strong>
-
-                </TableCell>
-
-                <TableCell>
-                    <strong>
-                        <Fab size="small" color="default" aria-label="add">
-                            <SaveIcon onClick={putData}/>
-                        </Fab>
-                    </strong>
-                </TableCell>
-            </TableRow>
-        </>
-    );
+const initialState = {
+    userId: 1,
+    id: 1,
+    title: "",
+    body: ""
 };
 
-export default TableRowWrapper;
+export function setBodyPostItem(data:string):ActionType{
+    return {
+        type:SET_BODY_POST_ITEM_STATE,
+        body:data
+    }
+}
 
+export function setTitlePostItem(data:string):ActionType{
+    return {
+        type:SET_TITLE_POST_ITEM_STATE,
+        title:data
+    }
+}
+
+export function resetPostItemData(data:FilterPosts_data):ActionType{
+    return {
+        type:RESET_POST_ITEM_STATE,
+        data:data
+    }
+}
+
+export function postItemReducer(state:any | FilterPosts_data, action: ActionType) {
+    switch (action.type) {
+        case RESET_POST_ITEM_STATE:
+            return {...action.data};
+        case SET_BODY_POST_ITEM_STATE:
+            return {...state, "body": action.body};
+        case SET_TITLE_POST_ITEM_STATE:
+            return {...state, "title": action.title};
+        default:
+            return state;
+    }
+}
 

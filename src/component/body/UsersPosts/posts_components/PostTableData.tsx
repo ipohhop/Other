@@ -1,5 +1,5 @@
-import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+// outer
+import React, {useMemo} from 'react';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,27 +13,22 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import {useAppSelector} from "../../../../store/store";
-import InputBase from '@material-ui/core/InputBase';
-import TableRowWrapper from "./postsUtil";
 
-const useRowStyles = makeStyles({
-    root: {
-        '& > *': {
-            borderBottom: 'unset',
-        },
-    },
-});
+// local
+import {useAppSelector} from "../../../../store/store";
+import TableRowWrapper from './TablePostItem';
+
+
 
 
 function Row({row}: any) {
     const {data} = row;
     const [open, setOpen] = React.useState(false);
-    const classes = useRowStyles();
+
 
     return (
-        <React.Fragment>
-            <TableRow className={classes.root}>
+        <>
+            <TableRow >
                 <TableCell>
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
@@ -61,14 +56,14 @@ function Row({row}: any) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {data.map((item: any) => <TableRowWrapper item={item}/>)}
+                                    {data.map((item: any) => <TableRowWrapper key={item.id} item={item}/>)}
                                 </TableBody>
                             </Table>
                         </Box>
                     </Collapse>
                 </TableCell>
             </TableRow>
-        </React.Fragment>
+        </>
     );
 }
 
@@ -77,9 +72,14 @@ export default function PostTableData() {
 
     const filterPosts = useAppSelector(state => state.filterPosts)
 
+    const filterPostsComponents = useMemo(() =>
+        filterPosts.map((row,index) => (<Row key={index} row={row}/>)), [filterPosts])
+
+
     return (
         <TableContainer component={Paper}>
             <Table aria-label="collapsible table">
+
                 <TableHead>
                     <TableRow>
                         <TableCell/>
@@ -89,11 +89,9 @@ export default function PostTableData() {
                         <TableCell align="right">Posts</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
-                    {filterPosts.map((row) => (
-                        <Row row={row}/>
 
-                    ))}
+                <TableBody>
+                    {filterPostsComponents}
                 </TableBody>
             </Table>
         </TableContainer>
