@@ -1,29 +1,32 @@
 // outer
-import React, {FunctionComponent, useEffect, useReducer, useRef, useState} from "react";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import TextField from "@material-ui/core/TextField/TextField";
-import Fab from "@material-ui/core/Fab";
-import BorderColorIcon from "@material-ui/icons/BorderColor";
-import DeleteIcon from "@material-ui/icons/Delete";
-import SaveIcon from "@material-ui/icons/Save";
+import React, {FunctionComponent, useEffect, useReducer, useRef, useState} from "react"
+import TableRow from "@material-ui/core/TableRow"
+import TableCell from "@material-ui/core/TableCell"
+import TextField from "@material-ui/core/TextField/TextField"
+import Fab from "@material-ui/core/Fab"
+import BorderColorIcon from "@material-ui/icons/BorderColor"
+import DeleteIcon from "@material-ui/icons/Delete"
+import SaveIcon from "@material-ui/icons/Save"
 
 // local
-import {deleteData, putData} from "./postsTableAPI";
-import {ActionType, postItemReducer, resetPostItemData, setBodyPostItem, setTitlePostItem} from "./postsUtil";
-import {FilterPosts_data} from "./postsInterfaces";
+import {ActionType, postItemReducer, resetPostItemData, setBodyPostItem, setTitlePostItem} from "./postsUtil"
+import {FilterPosts_data} from "./postsInterfaces"
+import {useAppDispatch} from "../../../../store/store";
+import {DELETE_POST_SAGA, PUT_POST_SAGA, SET_PAYLOAD_POST_SAGA} from "../../../../store/saga/setPostsSaga";
 
 // require outer
-const _ = require('lodash');
+const _ = require('lodash')
 
 
 interface OwnProps {
     item: FilterPosts_data
 }
 
-type Props = OwnProps;
+type Props = OwnProps
 
 const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
+
+    const reduxDispatche = useAppDispatch()
 
         // origin data ref
         const defaultData = useRef({...item})
@@ -42,9 +45,9 @@ const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
             dispatchesData(actionCreator(value))
         }
 
+        // status correct for generate ajax
 
         const [statusCorrect, setStatusCorrect] = useState("")
-
 
         // origin data point
         const [changePoint, setChangePoint] = useState(true)
@@ -61,27 +64,27 @@ const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
 
         //delete post item function
         function deletePostItem() {
-            let deleteStatusFn = false
-            return () => {
-                setStatusCorrect(prev => {
-                    switch (prev) {
-                        case "":
-                            deleteStatusFn = true
-                            setDeleteStatus(true)
-                            return "delete"
-                        case "correcting":
-                            deleteStatusFn = true
-                            setDeleteStatus(true)
-                            return "delete"
-                        case "delete":
-                            deleteStatusFn = false
-                            setDeleteStatus(false)
-                            return ""
-                        default:
-                            return ""
-                    }
-                })
-            }
+
+            setStatusCorrect(prev => {
+                switch (prev) {
+                    case "":
+                        setDeleteStatus(true)
+
+                        return "delete"
+                    case "correcting":
+
+                        setDeleteStatus(true)
+                        setActive(false)
+                        dispatchesData(resetPostItemData(defaultData.current))
+                        return "delete"
+                    case "delete":
+
+                        setDeleteStatus(false)
+                        return ""
+                    default:
+                        return ""
+                }
+            })
         }
 
         function correctPostItem() {
@@ -90,12 +93,9 @@ const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
                     case "" :
                         setActive(true)
                         return "correcting"
-                    case "delete":
-                        setActive(true)
-                        return "correcting"
                     case "correcting":
                         setActive(false)
-                        // console.log(defaultData.current)
+
                         dispatchesData(resetPostItemData(defaultData.current))
                         return ""
                     default:
@@ -103,11 +103,8 @@ const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
                 }
             })
         }
-        console.log("dataItem value:",dataItem)
-        console.log("status:", statusCorrect)
-        // deleteData(defaultData)
 
-// function for set color post on item
+        // function for set color post on item
         function colorBlock() {
             if (deleteStatus) return {background: "rgba(231,27,27,0.62)"}
             return active
@@ -115,6 +112,35 @@ const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
                     ? {background: "rgba(37,222,24,0.47)"}
                     : {background: "rgba(238,206,48,0.45)"}
                 : {}
+        }
+
+        // save function
+
+        function saveRequest() {
+            switch (statusCorrect) {
+                case "delete":
+                    reduxDispatche({
+                        type:SET_PAYLOAD_POST_SAGA,
+                        payload:defaultData.current,
+                        defaultPost:defaultData.current,
+                        do:DELETE_POST_SAGA
+                    })
+                    // deleteData(defaultData.current)
+                    return
+
+                case "correcting":
+                    reduxDispatche({
+                        type:SET_PAYLOAD_POST_SAGA,
+                        payload:dataItem,
+                        defaultPost:defaultData.current,
+                        do:PUT_POST_SAGA
+                    })
+
+                    // putData(dataItem)
+                    return
+                default:
+                    return;
+            }
         }
 
         return (
@@ -152,9 +178,9 @@ const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
                     {/*change icon item*/}
 
                     <TableCell style={{width: "40px"}}>
-                        <strong>
-                            <Fab size="small" color="primary" aria-label="add">
-                                <BorderColorIcon onClick={correctPostItem}/>
+                        <strong onClick={correctPostItem}>
+                            <Fab size="small" color="primary" aria-label="add" disabled={statusCorrect === "delete"}>
+                                <BorderColorIcon />
                             </Fab>
                         </strong>
                     </TableCell>
@@ -162,9 +188,9 @@ const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
                     {/*delete icon item*/}
 
                     <TableCell style={{width: "40px"}}>
-                        <strong>
+                        <strong onClick={deletePostItem}>
                             <Fab size="small" color="default" aria-label="add">
-                                <DeleteIcon onClick={deletePostItem()}/>
+                                <DeleteIcon/>
                             </Fab>
                         </strong>
                     </TableCell>
@@ -172,9 +198,10 @@ const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
                     {/*save icon item*/}
 
                     <TableCell style={{width: "40px"}}>
-                        <strong>
-                            <Fab size="small" color="default" aria-label="add" disabled={changePoint}>
-                                <SaveIcon onClick={() => putData(defaultData)}/>
+                        <strong onClick={saveRequest}>
+                            <Fab size="small" color="default" aria-label="add"
+                                 disabled={!(statusCorrect === "delete" || !changePoint)}>
+                                <SaveIcon/>
                             </Fab>
                         </strong>
                     </TableCell>
