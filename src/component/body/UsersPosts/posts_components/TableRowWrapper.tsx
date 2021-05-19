@@ -26,7 +26,7 @@ type Props = OwnProps
 
 const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
 
-    const reduxDispatche = useAppDispatch()
+        const reduxDispatche = useAppDispatch()
 
         // origin data ref
         const defaultData = useRef({...item})
@@ -120,20 +120,20 @@ const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
             switch (statusCorrect) {
                 case "delete":
                     reduxDispatche({
-                        type:SET_PAYLOAD_POST_SAGA,
-                        payload:defaultData.current,
-                        defaultPost:defaultData.current,
-                        do:DELETE_POST_SAGA
+                        type: SET_PAYLOAD_POST_SAGA,
+                        payload: defaultData.current,
+                        defaultPost: defaultData.current,
+                        do: DELETE_POST_SAGA
                     })
                     // deleteData(defaultData.current)
                     return
 
                 case "correcting":
                     reduxDispatche({
-                        type:SET_PAYLOAD_POST_SAGA,
-                        payload:dataItem,
-                        defaultPost:defaultData.current,
-                        do:PUT_POST_SAGA
+                        type: SET_PAYLOAD_POST_SAGA,
+                        payload: dataItem,
+                        defaultPost: defaultData.current,
+                        do: PUT_POST_SAGA
                     })
 
                     // putData(dataItem)
@@ -178,9 +178,10 @@ const TableRowWrapper: FunctionComponent<Props> = ({item}) => {
                     {/*change icon item*/}
 
                     <TableCell style={{width: "40px"}}>
-                        <strong onClick={correctPostItem}>
-                            <Fab size="small" color="primary" aria-label="add" disabled={statusCorrect === "delete"}>
-                                <BorderColorIcon />
+                        <strong>
+                            <Fab onClick={correctPostItem} size="small"
+                                 color="primary" aria-label="add" disabled={statusCorrect === "delete"}>
+                                <BorderColorIcon/>
                             </Fab>
                         </strong>
                     </TableCell>

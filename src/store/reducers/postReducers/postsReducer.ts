@@ -6,7 +6,6 @@ import {FilterPost, FilterPosts_data, Post} from "../../../component/body/UsersP
 // local
 import {filterForPosts} from "../../../component/body/UsersPosts/posts_components/postsUtil";
 import User from "../usersReducer/interfaceUserReducer";
-import {Map} from "@material-ui/icons";
 
 
 export const postsDataAction = createAction<Post[]>('GET_ALL_POSTS')

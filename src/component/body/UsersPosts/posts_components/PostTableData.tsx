@@ -16,7 +16,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 // local
 import {useAppSelector} from "../../../../store/store";
-import TableRowWrapper from './TablePostItem';
+import TableRowWrapper from './TableRowWrapper';
 
 
 
@@ -56,6 +56,7 @@ function Row({row}: any) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
+                                    <div>111</div>
                                     {data.map((item: any) => <TableRowWrapper key={item.id} item={item}/>)}
                                 </TableBody>
                             </Table>
