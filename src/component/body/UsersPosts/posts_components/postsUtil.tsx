@@ -40,13 +40,6 @@ export type ActionType = {
     data?:FilterPosts_data
 }
 
-const initialState = {
-    userId: 1,
-    id: 1,
-    title: "",
-    body: ""
-};
-
 export function setBodyPostItem(data:string):ActionType{
     return {
         type:SET_BODY_POST_ITEM_STATE,

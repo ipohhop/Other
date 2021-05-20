@@ -35,6 +35,12 @@ export const filterPostsReducer = createReducer([], {
         //fix bug , JSONplaseholder return false id
         data.id = Math.floor(Math.random() * 100000)
 
+
+
+
+
+
+        // pasha
         const userIndex = data.userId - 1
 
         const userDataPost = state[userIndex]["data"]

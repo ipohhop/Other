@@ -4,9 +4,8 @@ import Button from "@material-ui/core/Button";
 
 // local
 import PostTableData from "./posts_components/PostTableData";
-import {useAppDispatch, useAppSelector} from "../../../store/store";
+import {useAppDispatch} from "../../../store/store";
 import {GET_ALL_POSTS_SAGA} from "../../../store/saga/getPostsSaga";
-import {filterPostsDataAction} from "../../../store/reducers/postReducers/postsReducer";
 
 
 const styleButton = {
